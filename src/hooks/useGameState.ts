@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo, useRef } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import type { TablesInsert } from '@/integrations/supabase/types';
 import { Value, ALL_VALUES } from '../data/values';
 import { ALL_ISSUES } from '../data/issues';
 import {
@@ -184,7 +185,9 @@ export const useGameState = (config: TradeConfig = DEFAULT_TRADE_CONFIG) => {
     const timing = timingOverride ?? phaseTiming;
     const rankingToList = (r: Ranking) =>
       Object.entries(r).sort((a, b) => a[1] - b[1]).map(([name]) => name);
-    const payload = {
+    // Spread into plain objects so they type-check as Supabase Json.
+    const tradesJson = trades.map((t) => ({ ...t }));
+    const payload: TablesInsert<"sessions"> = {
       condition,
       deck_version: condition === "issues" ? "issues-20" : "values-18",
       dealt_hand: dealtPlayerHand.map(v => v.name),
@@ -192,9 +195,9 @@ export const useGameState = (config: TradeConfig = DEFAULT_TRADE_CONFIG) => {
       top_selection: finalTop,
       total_offers: trades.length,
       successful_trades: trades.filter(t => t.accepted).length,
-      trades: trades as any,
-      timing: timing as any,
-      partner_rankings: partners.map(p => ({ id: p.id, ranking: rankingToList(p.ranking) })) as any,
+      trades: tradesJson,
+      timing,
+      partner_rankings: partners.map(p => ({ id: p.id, ranking: rankingToList(p.ranking) })),
       raw: {
         sessionId: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         timestamp: new Date().toISOString(),
@@ -202,9 +205,9 @@ export const useGameState = (config: TradeConfig = DEFAULT_TRADE_CONFIG) => {
         dealtHand: dealtPlayerHand.map(v => v.name),
         finalHand: playerHand.map(v => v.name),
         topSelection: { n: topN, values: finalTop },
-        trades,
+        trades: tradesJson,
         timing,
-      } as any,
+      },
     };
     const { error } = await supabase.from('sessions').insert(payload);
     if (error) console.error('Failed to save session:', error);
