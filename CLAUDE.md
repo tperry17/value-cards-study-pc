@@ -52,6 +52,39 @@ The app runs **two study conditions from one codebase**:
   `main`, and anything merged to `main` appears in the Lovable editor. Work on
   a branch and merge through a pull request.
 
+## Pull requests
+
+Every PR uses the template below (also saved as
+`.github/pull_request_template.md`, which GitHub fills in automatically; keep
+the two in sync).
+
+```markdown
+## Why
+The problem or request this PR addresses.
+
+## Changes
+What changed, in participant-facing terms where possible. Say which
+condition(s) each change affects: Values, Issues, or both.
+
+## Checks
+What was run and the result: npm test, build, lint, manual checks of
+?condition=values and ?condition=issues. Report failures as failures.
+
+## Not in this PR
+Related work that was left out, and anything that must be done outside the
+code (Supabase, Lovable publishing).
+
+## Questions for the author
+Numbered list of open decisions or things to confirm before merging.
+Write "None" if there are none.
+```
+
+- **Open questions go in two places.** Whenever Claude opens a PR, it lists
+  every open question in the PR's "Questions for the author" section **and**
+  lists the same questions, numbered, in its message to the author in the
+  chat. Do not leave a question only in one of them.
+- When a question is answered, update the PR description to record the answer.
+
 ## Commands
 
 ```bash
