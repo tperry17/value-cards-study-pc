@@ -21,7 +21,7 @@ const MeetPartners = ({ partners, partnerProfiles, onContinue }: MeetPartnersPro
           Your Trading Partners
         </h1>
         <p className="text-muted-foreground font-sans">
-          The rest of the deck is dealt to the two Non-Playing Characters (NPC, virtual game players). You must trade at least once with each, but you can make multiple trades until you are satisfied with your hand.
+          The rest of the cards have been dealt to two other (virtual) players. You must trade at least once with each, but you can make multiple trades until you are satisfied with your hand.
         </p>
       </motion.div>
 

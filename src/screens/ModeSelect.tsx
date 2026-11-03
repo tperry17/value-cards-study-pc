@@ -1,10 +1,11 @@
 import { motion } from 'framer-motion';
 
 interface ModeSelectProps {
+  heading: string;
   onStart: () => void;
 }
 
-const ModeSelect = ({ onStart }: ModeSelectProps) => {
+const ModeSelect = ({ heading, onStart }: ModeSelectProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
       <motion.div
@@ -14,7 +15,7 @@ const ModeSelect = ({ onStart }: ModeSelectProps) => {
         className="text-center mb-10 max-w-md"
       >
         <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-3">
-          Issue Cards Study
+          {heading}
         </h1>
         <p className="text-muted-foreground text-lg font-sans">
           Welcome. Click below to begin.

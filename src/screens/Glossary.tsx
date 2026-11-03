@@ -16,7 +16,7 @@ const Glossary = ({ condition, onContinue }: GlossaryProps) => {
   const body =
     condition === 'issues'
       ? "You've been dealt a hand of issue cards. Each card represents a policy issue. You'll trade with two partners to build the hand that best reflects what matters most to your community."
-      : `We're playing a values card game — a reflective exercise where you'll be dealt random value cards, pick the ones that matter most to you, and negotiate trades with a partner. You'll be working with these ${cards.length} values today. Take a moment to read through them.`;
+      : `We're playing a values card game — a reflective exercise where you'll be dealt random value cards, pick the ones that matter most to you, and negotiate trades with two partners. You'll be working with these ${cards.length} values today. Take a moment to read through them.`;
 
   return (
     <div className="min-h-screen flex flex-col items-center px-4 py-12">

@@ -29,8 +29,32 @@ export type GamePhase =
 
 export type Condition = "values" | "issues";
 
-/** Single active study condition. Change to "values" to re-enable that deck. */
-const ACTIVE_CONDITION: Condition = "issues";
+/**
+ * The study condition comes from the link: `?condition=values` or
+ * `?condition=issues`. If the parameter is missing or not one of those,
+ * the participant is assigned at random (50/50).
+ */
+export const conditionFromUrl = (search: string): Condition | null => {
+  const raw = new URLSearchParams(search).get("condition")?.trim().toLowerCase();
+  return raw === "values" || raw === "issues" ? raw : null;
+};
+
+const resolveCondition = (): Condition => {
+  const fromUrl = typeof window !== "undefined" ? conditionFromUrl(window.location.search) : null;
+  return fromUrl ?? (Math.random() < 0.5 ? "values" : "issues");
+};
+
+/** Browser-tab title per condition. The link-preview title is set in index.html. */
+export const CONDITION_TITLES: Record<Condition, string> = {
+  values: "Values Exchange",
+  issues: "Issue Cards Study",
+};
+
+/** Heading on the welcome screen per condition. */
+export const CONDITION_HEADINGS: Record<Condition, string> = {
+  values: "Value Cards Study",
+  issues: "Issue Cards Study",
+};
 
 export interface PartnerDisplay {
   id: string;
@@ -64,7 +88,7 @@ const PHASE_ORDER: GamePhase[] = [
 
 export const useGameState = (config: TradeConfig = DEFAULT_TRADE_CONFIG) => {
   const [phase, setPhase] = useState<GamePhase>("mode-select");
-  const [condition, setCondition] = useState<Condition>(ACTIVE_CONDITION);
+  const [condition] = useState<Condition>(resolveCondition);
   const [phaseStartTime, setPhaseStartTime] = useState<number>(Date.now());
   const [phaseTiming, setPhaseTiming] = useState<Record<string, number>>({});
 
@@ -96,8 +120,6 @@ export const useGameState = (config: TradeConfig = DEFAULT_TRADE_CONFIG) => {
   const partnerProfiles = PARTNER_DISPLAY;
 
   const startStudy = useCallback(() => {
-    const assigned: Condition = ACTIVE_CONDITION;
-    setCondition(assigned);
     advancePhase("glossary");
   }, [advancePhase]);
 

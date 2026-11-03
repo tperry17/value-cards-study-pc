@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useGameState } from '../hooks/useGameState';
+import { useGameState, CONDITION_TITLES, CONDITION_HEADINGS } from '../hooks/useGameState';
 import ProgressBar from '../components/ProgressBar';
 import ModeSelect from '../screens/ModeSelect';
 import Glossary from '../screens/Glossary';
@@ -24,6 +24,10 @@ const Index = () => {
   const [showResearcher, setShowResearcher] = useState(false);
 
   useEffect(() => {
+    document.title = CONDITION_TITLES[game.condition];
+  }, [game.condition]);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd' || e.key === 'R' || e.key === 'r')) {
         e.preventDefault();
@@ -38,7 +42,7 @@ const Index = () => {
   const renderScreen = () => {
     switch (game.phase) {
       case "mode-select":
-        return <ModeSelect onStart={() => game.startStudy()} />;
+        return <ModeSelect heading={CONDITION_HEADINGS[game.condition]} onStart={() => game.startStudy()} />;
       case "glossary":
         return <Glossary condition={game.condition} onContinue={() => game.dealCards()} />;
       case "deal":
