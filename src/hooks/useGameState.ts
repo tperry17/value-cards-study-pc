@@ -46,7 +46,7 @@ const resolveCondition = (): Condition => {
 
 /** Browser-tab title per condition. The link-preview title is set in index.html. */
 export const CONDITION_TITLES: Record<Condition, string> = {
-  values: "Values Exchange",
+  values: "Value Cards Study",
   issues: "Issue Cards Study",
 };
 
